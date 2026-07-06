@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 40px;
+        }
+
+        #stats {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: #fff;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            white-space: nowrap;
+            padding: 0 60px;
+        }
+
+        #stats::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stat {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 14px;
+            border-right: 1px solid #e0e0e0;
+            height: 100%;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<div id="stats">
+    <div class="stat"><span class="stat-label">distance</span><span class="stat-value" id="v-dist">—</span></div>
+    <div class="stat"><span class="stat-label">climb</span><span class="stat-value" id="v-asc">—</span></div>
+    <div class="stat"><span class="stat-label">landing</span><span class="stat-value" id="v-desc">—</span></div>
+    <div class="stat"><span class="stat-label">max.</span><span class="stat-value" id="v-max">—</span></div>
+</div>
+
+
+<script>
+    let s = document.createElement('script');
+    s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    s.onload = function () { initMap(); };
+    s.onerror = function () { console.error('[MAP] Leaflet couldn\'t load'); };
+    document.head.appendChild(s);
+
+    let l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    l.onerror = function () { console.error('[MAP] Leaflet CSS couldn\'t load'); };
+    document.head.appendChild(l);
+
+    function initMap() {
+        try {
+            window._map = L.map('map');
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '© OpenStreetMap'
+            }).addTo(window._map);
+            window._map.setView([40.12, 29.13], 13);
+        } catch (e) {
+            console.error('[MAP] initMap:', e.message);
+        }
+    }
+
+    let routePoints = null;
+    let fullPolyline = null;
+    let traveledPolyline = null;
+    let currentMarker = null;
+    let currentIdx = 0;
+
+    function loadRoute(points) {
+        try {
+            let map = window._map;
+            if (!map) { console.error('[MAP] loadRoute: there is no map'); return; }
+
+            routePoints = points;
+            currentIdx = 0;
+
+            if (fullPolyline) { map.removeLayer(fullPolyline); }
+            if (traveledPolyline) { map.removeLayer(traveledPolyline); }
+            if (currentMarker) { map.removeLayer(currentMarker); }
+
+            let latlngs = points.map(function (p) { return [p.lat, p.lon]; });
+
+            fullPolyline = L.polyline(latlngs, {
+                color: '#bbb', weight: 4, opacity: 0.7
+            }).addTo(map);
+
+            traveledPolyline = L.polyline([latlngs[0]], {
+                color: '#1D9E75', weight: 5
+            }).addTo(map);
+
+            currentMarker = L.circleMarker(latlngs[0], {
+                radius: 8, color: '#1D9E75',
+                fillColor: 'white', fillOpacity: 1, weight: 3
+            }).addTo(map);
+
+            L.marker(latlngs[0]).addTo(map).bindPopup('Start');
+            L.marker(latlngs[latlngs.length - 1]).addTo(map).bindPopup('End');
+
+            map.fitBounds(fullPolyline.getBounds(), { padding: [30, 30] });
+            updateStats(points);
+        } catch (e) {
+            console.error('[MAP] loadRoute:', e.message);
+        }
+    }
+
+    function setProgress(idx) {
+        try {
+            if (!routePoints) { return; }
+            if (idx < 0) { idx = 0; }
+            if (idx >= routePoints.length) { idx = routePoints.length - 1; }
+            currentIdx = idx;
+
+            let traveled = routePoints.slice(0, idx + 1)
+                .map(function (p) { return [p.lat, p.lon]; });
+            traveledPolyline.setLatLngs(traveled);
+            currentMarker.setLatLng([routePoints[idx].lat, routePoints[idx].lon]);
+
+            window._map.panTo([routePoints[idx].lat, routePoints[idx].lon], { animate: true });
+        } catch (e) {
+            console.error('[MAP] setProgress:', e.message);
+        }
+    }
+
+    function updateCurrentLocation(lat, lon) {
+        try {
+            if (!routePoints) { return; }
+            let minDist = Infinity, minIdx = 0;
+            for (let i = 0; i < routePoints.length; i++) {
+                let dLat = routePoints[i].lat - lat;
+                let dLon = routePoints[i].lon - lon;
+                let d = dLat * dLat + dLon * dLon;
+                if (d < minDist) { minDist = d; minIdx = i; }
+            }
+            setProgress(minIdx);
+        } catch (e) {
+            console.error('[MAP] updateCurrentLocation:', e.message);
+        }
+    }
+
+    function updateStats(points) {
+        let totalDist = 0, totalAsc = 0, totalDesc = 0;
+        for (let i = 1; i < points.length; i++) {
+            let R = 6371000;
+            let dLat = (points[i].lat - points[i - 1].lat) * Math.PI / 180;
+            let dLon = (points[i].lon - points[i - 1].lon) * Math.PI / 180;
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(points[i - 1].lat * Math.PI / 180) * Math.cos(points[i].lat * Math.PI / 180)
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            totalDist += R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            let de = points[i].ele - points[i - 1].ele;
+            if (de > 0) { totalAsc += de; } else { totalDesc += Math.abs(de); }
+        }
+        let maxEle = Math.max.apply(null, points.map(function (p) { return p.ele; }));
+
+        document.getElementById('v-dist').textContent = (totalDist / 1000).toFixed(1) + ' km';
+        document.getElementById('v-asc').textContent = '+' + Math.round(totalAsc) + 'm';
+        document.getElementById('v-desc').textContent = '-' + Math.round(totalDesc) + 'm';
+        document.getElementById('v-max').textContent = Math.round(maxEle) + 'm';
+    }
+
+    function drawElevation(points) {
+        try {
+            let canvas = document.getElementById('elev-canvas');
+            let W = canvas.offsetWidth;
+            let H = canvas.offsetHeight;
+            if (!W || !H) { return; }
+            canvas.width = W;
+            canvas.height = H;
+            let ctx = canvas.getContext('2d');
+            let eles = points.map(function (p) { return p.ele; });
+            let minE = Math.min.apply(null, eles);
+            let maxE = Math.max.apply(null, eles);
+            let range = maxE - minE || 1;
+
+            let grad = ctx.createLinearGradient(0, 0, 0, H);
+            grad.addColorStop(0, 'rgba(29,158,117,0.5)');
+            grad.addColorStop(1, 'rgba(29,158,117,0.05)');
+
+            ctx.beginPath();
+            points.forEach(function (p, i) {
+                let x = (i / (points.length - 1)) * W;
+                let y = H - ((p.ele - minE) / range) * (H - 4) - 2;
+                if (i === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); }
+            });
+            ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            ctx.beginPath();
+            points.forEach(function (p, i) {
+                let x = (i / (points.length - 1)) * W;
+                let y = H - ((p.ele - minE) / range) * (H - 4) - 2;
+                if (i === 0) { ctx.moveTo(x, y); } else { ctx.lineTo(x, y); }
+            });
+            ctx.strokeStyle = '#1D9E75';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        } catch (e) {
+            console.error('[MAP] drawElevation:', e.message);
+        }
+    }
+</script>
+</body>
+
+</html>

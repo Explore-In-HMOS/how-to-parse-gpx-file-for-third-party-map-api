@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+	xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="@dwayneparton/geojson-to-gpx">
+	<metadata>
+		<name></name>
+		<author>
+			<name>Sea side walk</name>
+			<link href="https://www.openmapmaker.com"/>
+		</author>
+	</metadata>
+	<wpt lat="40.92038147820042" lon="29.127405881881714">
+		<ele>-0.5999999999985448</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923589750678474" lon="29.124605655670166">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.923854" lon="29.12456">
+		<ele>0.2000000000007276</ele>
+	</wpt>
+	<wpt lat="40.924246" lon="29.124249">
+		<ele>0</ele>
+	</wpt>
+	<wpt lat="40.924388" lon="29.123893">
+		<ele>0</ele>
+	</wpt>
+	<wpt lat="40.929105" lon="29.119776">
+		<ele>0.5</ele>
+	</wpt>
+	<wpt lat="40.929105" lon="29.119776"/>
+	<wpt lat="40.929421" lon="29.119511">
+		<ele>1.1000000000003638</ele>
+	</wpt>
+	<wpt lat="40.930696" lon="29.118402"/>
+	<trk>
+		<trkseg>
+			<trkpt lat="40.92038147820042" lon="29.127405881881714">
+				<ele>-0.5999999999985448</ele>
+			</trkpt>
+			<trkpt lat="40.923589750678474" lon="29.124605655670166">
+				<ele>0.5</ele>
+			</trkpt>
+			<trkpt lat="40.923854" lon="29.12456">
+				<ele>0.2000000000007276</ele>
+			</trkpt>
+			<trkpt lat="40.92388" lon="29.124551">
+				<ele>0.2000000000007276</ele>
+			</trkpt>
+			<trkpt lat="40.923925" lon="29.124523">
+				<ele>0.1000000000003638</ele>
+			</trkpt>
+			<trkpt lat="40.924246" lon="29.124249">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.924388" lon="29.123893">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.924531" lon="29.123775">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.924596" lon="29.123712">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.924846" lon="29.123483">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.924913" lon="29.123433">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.925852" lon="29.122618">
+				<ele>0.2000000000007276</ele>
+			</trkpt>
+			<trkpt lat="40.927177" lon="29.121486">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.927249" lon="29.121419">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.928126" lon="29.120623">
+				<ele>0</ele>
+			</trkpt>
+			<trkpt lat="40.929105" lon="29.119776">
+				<ele>0.5</ele>
+			</trkpt>
+			<trkpt lat="40.929421" lon="29.119511">
+				<ele>1.1000000000003638</ele>
+			</trkpt>
+			<trkpt lat="40.930537" lon="29.118526">
+				<ele>1.7000000000007276</ele>
+			</trkpt>
+			<trkpt lat="40.930613" lon="29.118472">
+				<ele>1.5</ele>
+			</trkpt>
+			<trkpt lat="40.930696" lon="29.118402">
+				<ele>1.4000000000014552</ele>
+			</trkpt>
+		</trkseg>
+	</trk>
+</gpx>

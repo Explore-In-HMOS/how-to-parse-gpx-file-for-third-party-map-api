@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="GPX Generator" 
+     xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>testroute</name>
+    <desc>route between office and subway</desc>
+    <author>
+      <name>enes</name>
+    </author>
+    <time>2026-06-04T11:32:50.441Z</time>
+  </metadata>
+  <trk>
+    <name>TestRoute</name>
+    <trkseg>
+      <trkpt lat="41.02791782781681" lon="29.117945194375356">
+        <ele>126</ele>
+        <time>2026-06-04T11:32:06.662Z</time>
+      </trkpt>
+      <trkpt lat="41.028354887500676" lon="29.11558485044225">
+        <ele>136</ele>
+        <time>2026-06-04T11:32:23.031Z</time>
+      </trkpt>
+      <trkpt lat="41.0268170720557" lon="29.11584234250768">
+        <ele>138</ele>
+        <time>2026-06-04T11:32:24.513Z</time>
+      </trkpt>
+      <trkpt lat="41.024696446587086" lon="29.11556339277013">
+        <ele>142</ele>
+        <time>2026-06-04T11:32:26.837Z</time>
+      </trkpt>
+      <trkpt lat="41.02260813034524" lon="29.11532735837682">
+        <ele>149</ele>
+        <time>2026-06-04T11:32:31.037Z</time>
+      </trkpt>
+      <trkpt lat="41.02157689852526" lon="29.11860394484393">
+        <ele>140</ele>
+        <time>2026-06-04T11:32:33.964Z</time>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
